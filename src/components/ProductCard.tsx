@@ -77,7 +77,6 @@ const ProductCard = memo(({ product, onAddToCart, variant = 'default', addedToCa
                 loading="lazy"
                 quality={85}
                 onError={(e) => {
-                  console.error('Ошибка загрузки изображения:', product.image);
                   e.currentTarget.style.display = 'none';
                   const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
                   if (nextElement) {
@@ -85,6 +84,13 @@ const ProductCard = memo(({ product, onAddToCart, variant = 'default', addedToCa
                   }
                 }}
               />
+              <div 
+                className="absolute inset-0 hidden items-center justify-center bg-slate-100 text-6xl text-slate-400"
+                style={{ display: 'none' }}
+                aria-hidden
+              >
+                🍽️
+              </div>
               
               {/* 3D Highlight Effect - Removed white overlay */}
               {/* <div 
