@@ -85,7 +85,7 @@ const ProductCard = memo(({ product, onAddToCart, variant = 'default', addedToCa
                 }}
               />
               <div 
-                className="absolute inset-0 hidden items-center justify-center bg-slate-100 text-6xl text-slate-400"
+                className="absolute inset-0 items-center justify-center bg-slate-100 text-6xl text-slate-400"
                 style={{ display: 'none' }}
                 aria-hidden
               >
