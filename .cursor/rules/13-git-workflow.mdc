@@ -1,0 +1,71 @@
+---
+description: Git workflow rules. Branches, commits, PR, merge strategy.
+globs: ["**/*"]
+alwaysApply: false
+---
+
+# GIT WORKFLOW RULES
+
+> Clean history = understandable history. Consistent commits = easy review.
+
+---
+
+## BRANCH STRATEGY (Size A)
+
+```
+main (production)
+├── development (staging/development)
+│   ├── feature/xxx
+│   ├── bugfix/xxx
+│   └── refactor/xxx
+└── hotfix/xxx
+```
+
+---
+
+## BRANCH NAMING
+
+```
+<type>/<short-description>
+```
+
+| Type | When | Example |
+|------|------|---------|
+| `feature/` | New functionality | `feature/add-cart` |
+| `bugfix/` | Bug fix | `bugfix/fix-login-error` |
+| `hotfix/` | Critical production fix | `hotfix/critical-payment-fix` |
+| `refactor/` | Refactoring | `refactor/auth-module` |
+| `chore/` | Infrastructure, deps | `chore/update-deps` |
+
+---
+
+## CONVENTIONAL COMMITS
+
+```
+<type>(<scope?>): <subject>
+```
+
+| Type | When | Example |
+|------|------|---------|
+| `feat` | New feature | `feat(cart): add quantity selector` |
+| `fix` | Bug fix | `fix(auth): handle expired token` |
+| `docs` | Documentation | `docs: update API docs` |
+| `refactor` | Refactoring | `refactor(api): extract validation` |
+| `perf` | Performance | `perf(images): implement lazy loading` |
+| `chore` | Maintenance | `chore: update dependencies` |
+
+---
+
+## RULES
+
+- Feature branches → squash merge
+- Hotfix → merge commit
+- PRs ≤ 400 lines (ideally ≤ 200)
+- ❌ Never force push to main/development
+- ❌ Never commit secrets or `.env` files
+- ✅ Always `git diff --staged` before commit
+
+---
+
+**Version:** 1.0
+**Date:** 2026-03-11

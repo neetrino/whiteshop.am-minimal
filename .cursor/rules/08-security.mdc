@@ -1,0 +1,87 @@
+---
+description: Security rules. CRITICAL. Applied to all code.
+globs: ["**/*.ts", "**/*.tsx", "**/*.env*", "**/api/**", "**/auth/**", "**/middleware*"]
+alwaysApply: false
+---
+
+# SECURITY RULES
+
+> Security is not optional, it's a requirement. These rules are MANDATORY.
+
+---
+
+## CRITICAL — NEVER DO
+
+```typescript
+// ❌ NEVER — secrets in code
+const API_KEY = 'sk_live_abc123';
+
+// ❌ NEVER — SQL injection
+const query = `SELECT * FROM users WHERE id = ${userId}`;
+
+// ❌ NEVER — eval
+eval(userInput);
+
+// ❌ NEVER — disable security
+app.use(cors({ origin: '*' }));
+
+// ❌ NEVER — log secrets
+console.log('Password:', password);
+```
+
+---
+
+## AUTHENTICATION
+
+- Use NextAuth for auth (already configured)
+- Passwords hashed with bcryptjs (project uses bcryptjs)
+- Secure cookies: httpOnly, secure, sameSite
+- Short-lived sessions
+
+---
+
+## INPUT VALIDATION
+
+- Validate ALL input with Zod schemas
+- Sanitize user input (trim, remove HTML)
+- Limit request body size
+- Validate file uploads: type, size, rename
+
+---
+
+## SECRETS
+
+- All secrets in `.env.local` (gitignored)
+- `.env.example` with placeholder values
+- Generate strong secrets: `openssl rand -base64 32`
+- Validate env variables at startup with Zod
+
+---
+
+## LOGGING
+
+```typescript
+// ✅ Log safe data
+logger.info('User logged in', { userId: user.id });
+
+// ❌ NEVER log
+logger.info('Login', { email, password });  // password!
+logger.debug('Token', { accessToken });     // token!
+```
+
+---
+
+## CHECKLIST
+
+- [ ] All secrets in env variables
+- [ ] `.env.local` in `.gitignore`
+- [ ] Input validation on all API routes
+- [ ] Passwords hashed (bcryptjs)
+- [ ] No secrets in logs
+- [ ] SQL injection protection (Prisma)
+- [ ] File uploads validated (type + size)
+
+---
+
+**Version:** 1.0
+**Date:** 2026-03-11

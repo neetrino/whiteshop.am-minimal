@@ -1,0 +1,76 @@
+---
+description: TypeScript rules. Applied to all .ts and .tsx files.
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: false
+---
+
+# TYPESCRIPT RULES
+
+> Strict typing = reliable code. No `any`, no compromises.
+
+---
+
+## PRINCIPLES
+
+1. **Strict Mode always on** — `"strict": true` in tsconfig
+2. **`any` is forbidden** — use `unknown` or concrete types
+3. **Explicit types** — for function params and return values
+4. **Inference where possible** — for local variables
+
+---
+
+## TYPES & INTERFACES
+
+```typescript
+// ✅ interface — for objects and classes
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// ✅ type — for unions, intersections, primitives
+type UserRole = 'admin' | 'user' | 'guest';
+type Status = 'pending' | 'active' | 'disabled';
+
+// ✅ No I/T prefixes
+interface UserProfile { ... }  // NOT IUserProfile
+type OrderStatus = 'pending' | 'completed';  // NOT TOrderStatus
+```
+
+---
+
+## FORBIDDEN PATTERNS
+
+```typescript
+// ❌ NEVER — any
+function process(data: any) { ... }
+
+// ✅ Use unknown + type guards
+function process(data: unknown) {
+  if (typeof data === 'string') return data.toUpperCase();
+  if (isUser(data)) return data.name;
+  throw new Error('Invalid data type');
+}
+
+// ✅ Use generics
+function process<T>(data: T): T { return data; }
+```
+
+- Minimize `as` type assertions — use type guards instead
+- Avoid `!` non-null assertions — check explicitly
+
+---
+
+## BEST PRACTICES
+
+- Use Utility Types: `Partial<T>`, `Pick<T>`, `Omit<T>`, `Record<K,V>`
+- Use discriminated unions for state management
+- Use `as const` for literal types
+- Use named exports (no default exports)
+- Use barrel exports via `index.ts`
+
+---
+
+**Version:** 1.0
+**Date:** 2026-03-11

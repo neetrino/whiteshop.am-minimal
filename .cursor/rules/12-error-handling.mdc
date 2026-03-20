@@ -1,0 +1,71 @@
+---
+description: Error handling rules. Centralized and consistent across all layers.
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: false
+---
+
+# ERROR HANDLING RULES
+
+> Errors are a normal part of the flow. Handle them properly.
+
+---
+
+## PRINCIPLES
+
+1. **Centralization** — unified error handling mechanism
+2. **Typing** — custom error classes
+3. **Informative** — clear messages with context
+4. **Graceful Degradation** — app works even with errors
+
+---
+
+## RULES
+
+```typescript
+// ✅ Specific error types
+throw new NotFoundError('User', userId);
+
+// ✅ Informative messages with context
+logger.error('Payment failed', { orderId, errorCode: err.code });
+
+// ✅ Graceful degradation
+try {
+  const recommendations = await getRecommendations();
+  return recommendations;
+} catch {
+  return []; // Return empty instead of crash
+}
+
+// ❌ Don't swallow errors
+try { await doSomething(); } catch {} // Empty catch = lost info
+
+// ❌ Don't use non-informative messages
+throw new Error('Error');
+throw new Error('Something went wrong');
+
+// ❌ Don't log sensitive data
+catch (error: any) { ... } // Don't use any for errors
+```
+
+---
+
+## API ROUTES
+
+- Return consistent error format: `{ error: { message, code } }`
+- Handle Prisma errors (P2002=conflict, P2025=not found)
+- 4xx for client errors, 5xx for server errors
+- Log 5xx with full context, 4xx as warnings
+
+---
+
+## FRONTEND
+
+- Error boundaries for critical sections
+- Show user-friendly error messages
+- Provide retry actions for server errors
+- Redirect to login on 401
+
+---
+
+**Version:** 1.0
+**Date:** 2026-03-11

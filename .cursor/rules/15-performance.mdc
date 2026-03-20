@@ -1,0 +1,73 @@
+---
+description: Performance rules. Web Vitals, optimization, caching.
+globs: ["**/*.ts", "**/*.tsx", "**/app/**", "**/components/**"]
+alwaysApply: false
+---
+
+# PERFORMANCE RULES
+
+> Performance is a feature. Slow app = bad UX.
+
+---
+
+## TARGET METRICS
+
+### Web Vitals
+| Metric | Target | Description |
+|--------|--------|-------------|
+| **LCP** | < 2.5s | Largest Contentful Paint |
+| **INP** | < 200ms | Interaction to Next Paint |
+| **CLS** | < 0.1 | Cumulative Layout Shift |
+
+---
+
+## IMAGES
+
+- Always use `next/image`
+- `priority` for above-the-fold / LCP images
+- `loading="lazy"` for below-the-fold
+- `sizes` attribute for responsive
+- Formats: WebP/AVIF (configured in next.config.ts)
+- ❌ Never use plain `<img>` tags
+
+---
+
+## BUNDLE OPTIMIZATION
+
+- Dynamic imports for heavy components (`next/dynamic`)
+- Import only what you need (tree shaking)
+- `optimizePackageImports` for large packages (lucide-react)
+- Avoid importing entire libraries (`import _ from 'lodash'`)
+
+---
+
+## REACT OPTIMIZATION
+
+- `React.memo` for list item components
+- `useMemo` for expensive calculations only
+- `useCallback` for stable function references passed as props
+- ❌ Don't memoize simple derivations
+- Virtualization for long lists (100+ items)
+
+---
+
+## CACHING
+
+- HTTP Cache-Control headers for API routes (already configured)
+- `next/image` caching (1 year TTL configured)
+- Parallel queries with `Promise.all` when independent
+- DB indexes for frequent queries
+
+---
+
+## DATABASE
+
+- Select only needed fields
+- Use `include` to avoid N+1
+- Always paginate lists
+- Use indexes for filtered/sorted columns
+
+---
+
+**Version:** 1.0
+**Date:** 2026-03-11
