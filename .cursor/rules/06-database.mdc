@@ -1,0 +1,91 @@
+---
+description: Database rules. Applied to Prisma schema, migrations, and queries.
+globs: ["**/prisma/**", "**/*.prisma", "**/db/**", "**/migrations/**"]
+alwaysApply: false
+---
+
+# DATABASE RULES
+
+> PostgreSQL + Prisma. Neon managed. Security and performance.
+
+---
+
+## PRINCIPLES
+
+1. **PostgreSQL** as primary DB (Neon managed)
+2. **Prisma ORM** — no raw SQL unless absolutely necessary
+3. **Migrations are mandatory** — all changes via migrations
+4. **Indexes are intentional** — for all frequent queries
+
+---
+
+## PRISMA SCHEMA RULES
+
+- Models: PascalCase (`User`, `OrderItem`)
+- Fields: camelCase (`firstName`, `createdAt`)
+- Enums: UPPER_SNAKE values (`PENDING`, `IN_PROGRESS`)
+- Tables: snake_case via `@@map("order_items")`
+- Always add `createdAt` and `updatedAt` timestamps
+- Use `cuid()` or `uuid()` for IDs
+
+---
+
+## QUERY PATTERNS
+
+```typescript
+// ✅ Select only needed fields
+const users = await prisma.user.findMany({
+  select: { id: true, name: true, email: true },
+});
+
+// ✅ Use include for relations (avoid N+1)
+const orders = await prisma.order.findMany({
+  include: { items: true },
+});
+
+// ✅ Pagination
+const products = await prisma.product.findMany({
+  skip: (page - 1) * limit,
+  take: limit,
+  orderBy: { createdAt: 'desc' },
+});
+
+// ✅ Transactions for related operations
+const [order, payment] = await prisma.$transaction([...]);
+
+// ❌ N+1 — loading in a loop
+// ❌ Loading all records without pagination
+// ❌ Raw SQL without necessity
+```
+
+---
+
+## MIGRATIONS
+
+```bash
+# Create migration
+npx prisma migrate dev --name add_user_role
+
+# Deploy migration (production)
+npx prisma migrate deploy
+
+# Generate client
+npx prisma generate
+```
+
+- Use descriptive names: `add_users_table`, `add_order_status_column`
+- ❌ Never: `update`, `fix`, `changes`, `migration1`
+- ❌ Never delete migrations manually
+
+---
+
+## NEON SPECIFICS
+
+- Use pooled connection for runtime (`DATABASE_URL`)
+- Use direct connection for migrations (`DIRECT_URL`)
+- Neon handles backups, PITR, and scaling automatically
+
+---
+
+**Version:** 1.0
+**Date:** 2026-03-11

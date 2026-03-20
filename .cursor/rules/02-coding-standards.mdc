@@ -1,0 +1,106 @@
+---
+description: Coding standards for all TypeScript/JavaScript files.
+globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+alwaysApply: false
+---
+
+# CODING STANDARDS
+
+> Unified rules for clean, readable, and maintainable code.
+
+---
+
+## LIMITS
+
+| Metric | Limit | When exceeded |
+|--------|-------|---------------|
+| Lines per function | ≤ 50 | Split into sub-functions |
+| Lines per file | ≤ 300 | Split into modules |
+| Function parameters | ≤ 4 | Use object parameter |
+| Nesting levels | ≤ 3 | Early returns |
+| Characters per line | ≤ 100 | Line break |
+
+---
+
+## NAMING
+
+### Function verbs
+| Action | Prefix | Example |
+|--------|--------|---------|
+| Get | get | `getUser`, `getProducts` |
+| Set | set | `setStatus`, `setConfig` |
+| Create | create | `createOrder`, `createUser` |
+| Update | update | `updateProfile` |
+| Delete | delete/remove | `deleteUser`, `removeItem` |
+| Check | is/has/can | `isValid`, `hasAccess` |
+| Transform | to/from/parse | `toJSON`, `fromDTO` |
+| Handle | handle/process | `handleSubmit`, `processPayment` |
+| Validate | validate | `validateEmail` |
+
+---
+
+## COMMENTS
+
+```typescript
+// ✅ GOOD — explain WHY
+// Using setTimeout instead of requestAnimationFrame
+// due to Safari modal animation bug
+setTimeout(() => closeModal(), 0);
+
+// ✅ GOOD — warning
+// IMPORTANT: order matters. Validate first, then save
+await validateOrder(order);
+await saveOrder(order);
+
+// ❌ BAD — obvious code
+// Increment counter by 1
+counter++;
+```
+
+### JSDoc for public functions
+
+```typescript
+/**
+ * Calculate order total including discounts and shipping.
+ *
+ * @param items - Order items
+ * @param discount - Discount percentage (0-100)
+ * @param shippingCost - Shipping cost
+ * @returns Total order amount
+ */
+function calculateOrderTotal(
+  items: OrderItem[],
+  discount: number,
+  shippingCost: number
+): number {
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const discountAmount = subtotal * (discount / 100);
+  return subtotal - discountAmount + shippingCost;
+}
+```
+
+---
+
+## FUNCTIONS
+
+- Prefer pure functions (no side effects)
+- One function — one responsibility
+- Use default parameters
+- Use destructuring
+- Use optional chaining & nullish coalescing (`??` not `||`)
+- Use template literals
+- Use array methods (filter, map, reduce) over loops
+
+---
+
+## ANTI-PATTERNS
+
+- ❌ Magic numbers/strings → use named constants
+- ❌ Mutation of arguments → return new objects
+- ❌ Nested ternary operators → use functions
+- ❌ Double negation (`!isNotValid`) → use positive conditions
+
+---
+
+**Version:** 1.0
+**Date:** 2026-03-11

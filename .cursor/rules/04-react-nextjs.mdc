@@ -1,0 +1,108 @@
+---
+description: React and Next.js rules. Applied to components and pages.
+globs: ["**/*.tsx", "**/app/**", "**/components/**"]
+alwaysApply: false
+---
+
+# REACT & NEXT.JS RULES
+
+> Modern React Server Components, App Router, and best practices.
+
+---
+
+## PRINCIPLES
+
+1. **Server Components by default** — `'use client'` only when needed
+2. **Composition over inheritance** — small reusable components
+3. **Colocation** — related code together
+4. **Minimal state** — derive where possible
+
+---
+
+## COMPONENT STRUCTURE
+
+```tsx
+// 1. Imports — React/Next first, then external, then internal
+import { useState, useCallback, memo } from 'react';
+import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import type { Product } from '@/types';
+
+// 2. Types
+interface ProductCardProps {
+  product: Product;
+  onAddToCart: (productId: string) => void;
+  variant?: 'compact' | 'full';
+  className?: string;
+}
+
+// 3. Named export (no default export)
+export function ProductCard({ product, onAddToCart, variant = 'full', className }: ProductCardProps) {
+  // 4. Hooks → 5. Derived state → 6. Callbacks → 7. Early returns → 8. Render
+}
+```
+
+---
+
+## WHEN TO USE 'use client'
+
+```tsx
+// ✅ 'use client' needed:
+// - useState, useEffect, useContext
+// - Event handlers (onClick, onChange)
+// - Browser APIs (localStorage, window)
+// - Custom hooks with state
+
+// ❌ 'use client' NOT needed:
+// - Static render
+// - Data fetching
+// - Direct DB access
+// - Server Actions
+```
+
+---
+
+## STYLING WITH TAILWIND
+
+- Use `cn()` from `@/lib/utils` for conditional classes
+- Use semantic Tailwind classes (not arbitrary values)
+- Use standard spacing scale
+- ❌ No inline styles — Tailwind classes only
+
+---
+
+## OPTIMIZATION
+
+- `React.memo` for list item components
+- `useCallback` for functions passed as props
+- `useMemo` only for expensive calculations (not simple derivations)
+- `next/image` for all images
+- `priority` for above-the-fold (LCP) images
+- Dynamic imports for heavy components (`next/dynamic`)
+
+---
+
+## SEO
+
+- Use Metadata API in `layout.tsx` and pages
+- Use `generateMetadata` for dynamic pages
+- JSON-LD structured data for products
+- `sitemap.ts` and `robots.ts`
+
+---
+
+## CHECKLIST
+
+- [ ] Named exports
+- [ ] Props typed with interface
+- [ ] Correct order: imports → types → component → hooks → handlers → render
+- [ ] `'use client'` only when necessary
+- [ ] `memo` for list components
+- [ ] No inline objects/functions in props
+- [ ] Server Components by default
+- [ ] `next/image` for images
+
+---
+
+**Version:** 1.0
+**Date:** 2026-03-11

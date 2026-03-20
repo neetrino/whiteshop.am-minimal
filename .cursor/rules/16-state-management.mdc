@@ -1,0 +1,69 @@
+---
+description: State management rules. Server state, Client state, Form state, URL state.
+globs: ["**/*.tsx", "**/hooks/**", "**/store/**"]
+alwaysApply: false
+---
+
+# STATE MANAGEMENT RULES
+
+> Right state in the right place. Not everything needs a global store.
+
+---
+
+## STATE TYPES
+
+```
+Server state → fetch / SWR / React Query
+Client state → Context / useState / Zustand
+Form state   → React Hook Form + Zod
+URL state    → useSearchParams / nuqs
+```
+
+---
+
+## DECISION TREE
+
+```
+Data from server?
+├── Yes → fetch in component / Server Component
+└── No
+    └── Needs to be in URL?
+        ├── Yes → useSearchParams
+        └── No
+            └── Global?
+                ├── Yes → Context (useCart, useSettings)
+                └── No
+                    └── Form data?
+                        ├── Yes → React Hook Form
+                        └── No → useState
+```
+
+---
+
+## CURRENT PROJECT PATTERNS
+
+- **Cart:** Context + localStorage (`useCart`)
+- **Settings:** Context (`useSettings`)
+- **Auth:** NextAuth SessionProvider
+- **Forms:** React Hook Form + Zod
+
+---
+
+## ANTI-PATTERNS
+
+```tsx
+// ❌ Duplicating state
+const [localUser, setLocalUser] = useState(user);
+
+// ❌ Derived state in useState
+const [total, setTotal] = useState(0);
+useEffect(() => setTotal(items.reduce(...)), [items]);
+
+// ✅ Derive directly
+const total = items.reduce((sum, i) => sum + i.price, 0);
+```
+
+---
+
+**Version:** 1.0
+**Date:** 2026-03-11
