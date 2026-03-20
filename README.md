@@ -1,61 +1,54 @@
-# Witleybel Online Shop - Современный интернет-магазин
+# Զարգացման կանոնների կաղապար (Cursor AI)
 
-Полнофункциональный интернет-магазин с широким ассортиментом товаров. Современный дизайн, быстрая загрузка, удобная навигация.
+Cursor-ում AI-զարգացման կանոններով repo-ի կաղապար։ Next.js / NestJS, ճարտարապետություն, կոդ, անվտանգություն, թեստեր, դեպլոյ։
 
-## 🚀 Запуск проекта
+---
 
-```bash
-# Установка зависимостей
-npm install
+## Ինչպես սկսել
 
-# Запуск базы данных PostgreSQL
-brew services start postgresql@15
+1. **Repo** — GitHub → Use this template → clone, բացի՛ր պրոյեկտի թղթապանակը Cursor-ում։
+2. **BRIEF** — լրացրու՛ `docs/BRIEF.md` (նկարագրություն, ֆունկցիաներ, ինտեգրացիաներ)։
+3. **AI** — chat-ում. «Կարդա՛ docs/BRIEF.md, սկսի՛ր ըստ 21-project-onboarding.mdc. Փուլ 1 — չափը, Փուլ 2 — TECH_CARD. Սպասում եմ հաստատում կոդից առաջ»։
+4. **Հաստատում** — TECH_CARD և ճարտարապետությունը հաստատի՛ր, ապա env։
 
-# Создание базы данных
-psql postgres -c "CREATE DATABASE witleybel_shop;"
+---
 
-# Применение миграций
-npx prisma migrate dev
+## Մշակողի դերը
 
-# Заполнение тестовыми данными
-npx tsx scripts/seed.ts
+- **Կոդից առաջ:** BRIEF, TECH_CARD, ճարտարապետություն — AI-ն առաջարկում է, դու հաստատում ես։
+- **Տվյալներ (AI-ն կխնդրի ըստ need-ի):** Neon (DATABASE_URL), R2 (bucket + բանալիներ), Vercel (env), Auth (OAuth), Resend/Stripe/Դոմեն — անհրաժեշտության դեպքում։
+- **Env:** Ստեղծել `.env` + `.env.example` (առանց գաղտնիքների), `.gitignore`-ում — `.env`, `.env.local`. 
+Հերթականություն. 
+Neon → `.env`
+R2 →  `.env`
+Resend / Upstash (եթե պետք է) → `.env`. Գաղտնիքները միայն env-ում, `.env` — չի commit-վում։
+- **Ընթացքում:** Պատասխանի՛ր AI-ի հարցերին, ստուգի՛ր PROGRESS.md, թեստավորի՛ր փուլերը։
+- **Ավարտին:** TECH_CARD ✅, PROGRESS 100%, դեպլոյ + .env.example փաստաթղթավորված։
 
-# Запуск приложения
-npm run dev
-```
+---
 
-## 📁 Структура проекта
+## Նախագծերի չափեր
 
-```
-app/
-├── src/
-│   ├── app/
-│   │   ├── api/products/     # API для товаров
-│   │   ├── products/         # Страница каталога
-│   │   └── page.tsx          # Главная страница
-│   ├── constants/            # Константы (товары, цвета)
-│   ├── hooks/                # React хуки (корзина)
-│   ├── lib/                  # Утилиты (Prisma)
-│   └── types/                # TypeScript типы
-├── prisma/                   # Схема базы данных
-└── scripts/                  # Скрипты (seed)
-```
+| Չափ | Նկարագրություն | Կառուցվածք |
+|-----|-----------------|------------|
+| **A** | 1–3 ամիս, 5–15 ֆիչ | `src/app`, `components`, `lib` |
+| **B** | 3–6 ամիս, 15–50 ֆիչ | `src/features/*`, `shared/*` |
+| **C** | 6+ ամիս, 50+ ֆիչ | Monorepo `apps/*`, `packages/*` |
 
-## 🛠 Технологии
+**Տեղեկատուներ.** `reference/platforms/`, `knowledge-base/`, `templates/` — Vercel, Neon, R2, Render, փաստաթղթերի կաղապարներ։
 
-- **Next.js 15.5.1** - React фреймворк
-- **PostgreSQL** - база данных
-- **Prisma** - ORM
-- **Tailwind CSS** - стили
-- **TypeScript** - типизация
+---
 
-## 📊 База данных
+## Կանոնների թարմացում
 
-- **Товары** - широкий ассортимент товаров
-- **Пользователи** - система регистрации и профилей
-- **Заказы** - полный цикл обработки заказов
-- **Платежи** - интеграция с платежными системами
+Template-ի կանոնները թարմացվում են։ Գոյություն ունեցող նախագծում. ավելացրու՛ կաղապարը remote, fetch արա՛, ապա merge/checkout արա՛ անհրաժեշտ `.cursor/rules/*.mdc` ֆայլերը (մանրամասներ — Git-ի remote/fetch/checkout ուղեցույցներ)։
 
-## 🌐 Деплой
+---
 
-Проект готов для деплоя на Vercel с PostgreSQL.
+## Quality Automation
+
+Պրոյեկտ ստեղծելուց հետո. AI-ն (onboarding 3.1.1) — prettier, vitest, husky, commitlint, CI workflow. Մշակողը. Branch Protection (`main`), Secret Protection, Dependabot npm։ Մանրամասներ — `docs/QUALITY_AUTOMATION_PLAN.md`։
+
+---
+
+[MIT](LICENSE) — ազատ օգտագործում և հարմարեցում։
